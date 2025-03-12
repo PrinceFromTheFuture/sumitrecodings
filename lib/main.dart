@@ -22,10 +22,13 @@ void main() async {
   Hive.registerAdapter(MeetingHiveAdapter());
   boxMeetings = await Hive.openBox<MeetingHive>('meetingBoxA');
   boxAccounts = await Hive.openBox<AccountHive>('accountBox');
-  boxAccounts.put(
-    1,
-    AccountHive(firstName: 'Amir', isFirstLogin: true, lastName: 'Waisblay'),
-  );
+  if (boxAccounts.values.isEmpty) {
+    boxAccounts.put(
+      1,
+      AccountHive(firstName: 'Amir', isFirstLogin: true, lastName: 'Waisblay'),
+    );
+  }
+  ;
   runApp(ProviderScope(child: MyApp()));
 }
 

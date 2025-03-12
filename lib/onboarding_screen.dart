@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sumitrecordingsapp/globals.dart';
+import 'package:sumitrecordingsapp/main.dart';
+import 'package:sumitrecordingsapp/screens/home_page.dart';
 import 'package:sumitrecordingsapp/size_config.dart';
 import 'package:sumitrecordingsapp/onboarding_contents.dart';
+import 'package:sumitrecordingsapp/test1/AccountHive.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -20,21 +24,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   int _currentPage = 0;
   List colors = const [
-    Color(0xffDAD3C8),
-    Color(0xffFFE5DE),
-    Color(0xffDCF6E6),
+    GlobalColors.lightGray,
+    GlobalColors.lightGray,
+    GlobalColors.lightGray,
   ];
 
-  AnimatedContainer _buildDots({
-    int? index,
-  }) {
+  AnimatedContainer _buildDots({int? index}) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(50),
-        ),
-        color: Color(0xFF000000),
+        borderRadius: BorderRadius.all(Radius.circular(50)),
+        color: GlobalColors.orange,
       ),
       margin: const EdgeInsets.only(right: 5),
       height: 10,
@@ -66,15 +66,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     padding: const EdgeInsets.all(40.0),
                     child: Column(
                       children: [
-                        Expanded( // Wrap the Image.asset with Expanded
+                        Expanded(
+                          // Wrap the Image.asset with Expanded
                           child: Image.asset(
                             contents[i].image,
                             // Remove fixed height here, let it be flexible
                           ),
                         ),
-                        SizedBox(
-                          height: (height >= 840) ? 60 : 30,
-                        ),
+                        SizedBox(height: (height >= 840) ? 60 : 30),
                         Text(
                           contents[i].title,
                           textAlign: TextAlign.center,
@@ -93,7 +92,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             fontSize: (width <= 550) ? 17 : 25,
                           ),
                           textAlign: TextAlign.center,
-                        )
+                        ),
                       ],
                     ),
                   );
@@ -109,79 +108,110 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
                       contents.length,
-                      (int index) => _buildDots(
-                        index: index,
-                      ),
+                      (int index) => _buildDots(index: index),
                     ),
                   ),
                   _currentPage + 1 == contents.length
                       ? Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            child: const Text("START"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
+                        padding: const EdgeInsets.all(30),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            boxAccounts.put(
+                              1,
+                              AccountHive(
+                                firstName: boxAccounts.values.first.firstName,
+                                isFirstLogin: false,
+                                lastName: boxAccounts.values.first.lastName,
                               ),
-                              padding: (width <= 550)
-                                  ? const EdgeInsets.symmetric(
-                                      horizontal: 100, vertical: 20)
-                                  : EdgeInsets.symmetric(
-                                      horizontal: width * 0.2, vertical: 25),
-                              textStyle:
-                                  TextStyle(fontSize: (width <= 550) ? 13 : 17),
+                            );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyHomePage(),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            "START",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: GlobalColors.orange,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            padding:
+                                (width <= 550)
+                                    ? const EdgeInsets.symmetric(
+                                      horizontal: 100,
+                                      vertical: 20,
+                                    )
+                                    : EdgeInsets.symmetric(
+                                      horizontal: width * 0.2,
+                                      vertical: 25,
+                                    ),
+                            textStyle: TextStyle(
+                              fontSize: (width <= 550) ? 13 : 17,
                             ),
                           ),
-                        )
+                        ),
+                      )
                       : Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  _controller.jumpToPage(2);
-                                },
-                                child: const Text(
-                                  "SKIP",
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                style: TextButton.styleFrom(
-                                  elevation: 0,
-                                  textStyle: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: (width <= 550) ? 13 : 17,
-                                  ),
+                        padding: const EdgeInsets.all(30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                _controller.jumpToPage(2);
+                              },
+                              child: const Text(
+                                "SKIP",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              style: TextButton.styleFrom(
+                                elevation: 0,
+                                textStyle: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: (width <= 550) ? 13 : 17,
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  _controller.nextPage(
-                                    duration: const Duration(milliseconds: 200),
-                                    curve: Curves.easeIn,
-                                  );
-                                },
-                                child: const Text("NEXT"),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  elevation: 0,
-                                  padding: (width <= 550)
-                                      ? const EdgeInsets.symmetric(
-                                          horizontal: 30, vertical: 20)
-                                      : const EdgeInsets.symmetric(
-                                          horizontal: 30, vertical: 25),
-                                  textStyle: TextStyle(
-                                      fontSize: (width <= 550) ? 13 : 17),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                _controller.nextPage(
+                                  duration: const Duration(milliseconds: 200),
+                                  curve: Curves.easeIn,
+                                );
+                              },
+                              child: const Text(
+                                "NEXT",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: GlobalColors.orange,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                elevation: 0,
+                                padding:
+                                    (width <= 550)
+                                        ? const EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                          vertical: 20,
+                                        )
+                                        : const EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                          vertical: 25,
+                                        ),
+                                textStyle: TextStyle(
+                                  fontSize: (width <= 550) ? 13 : 17,
                                 ),
                               ),
-                            ],
-                          ),
-                        )
+                            ),
+                          ],
+                        ),
+                      ),
                 ],
               ),
             ),

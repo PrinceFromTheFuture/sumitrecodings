@@ -39,20 +39,19 @@ class Meeting {
 
     const minimumHourCount = 3;
     final test = DateTime.now();
-    final meetingLength =
-        test
-            .copyWith(hour: meeting.endTime.hour, minute: meeting.endTime.hour)
-            .difference(
-              test.copyWith(
-                hour: meeting.startTime.hour,
-                minute: meeting.endTime.hour,
-              ),
-            )
-            .inMinutes;
+    final meetingLength = test
+        .copyWith(hour: meeting.endTime.hour, minute: meeting.endTime.minute)
+        .difference(
+          test.copyWith(
+            hour: meeting.startTime.hour,
+            minute: meeting.startTime.minute,
+          ),
+        );
+    print(meetingLength.inMinutes);
     final totalMeetingLength =
-        meetingLength / 60 <= minimumHourCount
+        meetingLength.inMinutes / 60 <= minimumHourCount
             ? minimumHourCount
-            : meetingLength/60;
+            : meetingLength.inMinutes / 60;
     final extraHours =
         0.5 +
         (meeting.isFirstMeetingAtClient == true

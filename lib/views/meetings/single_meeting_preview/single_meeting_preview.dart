@@ -36,35 +36,6 @@ class SingleMeetingPreview extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        maxRadius: 14.0,
-                        backgroundImage: AssetImage(
-                          'assets/profile_picture.jpg',
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        '${boxAccounts.values.first.firstName} ${boxAccounts.values.first.lastName}',
-                        style: GlobalTextStyles.title,
-                      ),
-                    ],
-                  ),
-                  Text(
-                    timeago.format(
-                      meeting.date.copyWith(
-                        hour: meeting.endTime.hour,
-                        minute: meeting.endTime.minute,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              NormalDevider(),
               Padding(
                 padding: EdgeInsets.only(right: 4.0),
                 child: Text(meeting.name, style: GlobalTextStyles.title),
@@ -94,10 +65,18 @@ class SingleMeetingPreview extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
 
                     children: [
-                      Text('Issuer', style: GlobalTextStyles.graySubtitle),
+                      Text('When', style: GlobalTextStyles.graySubtitle),
                       SizedBox(height: 5),
 
-                      Text('Sumit AI', style: GlobalTextStyles.title),
+                      Text(
+                        timeago.format(
+                          meeting.date.copyWith(
+                            hour: meeting.endTime.hour,
+                            minute: meeting.endTime.minute,
+                          ),
+                        ),
+                        style: GlobalTextStyles.title,
+                      ),
                     ],
                   ),
                 ],

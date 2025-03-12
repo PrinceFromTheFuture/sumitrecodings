@@ -334,7 +334,7 @@ class _EditeTimeState extends ConsumerState<EditeTime> {
         Text('Start', style: GlobalTextStyles.subtitle),
         ElevatedButton(
           onPressed: () async {
-            final TimeOfDay? startTime = await showTimePicker (
+            final TimeOfDay? startTime = await showTimePicker(
               context: context,
               initialTime: widget.startTime,
             );
@@ -390,7 +390,7 @@ class _EditeTimeState extends ConsumerState<EditeTime> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                if(newStartTime!.isAfter(newEndTime!)) return;
+                if (newStartTime!.isAfter(newEndTime!)) return;
                 meeting.updateMeetingFlied(
                   widget.meetingId,
                   startTime: newStartTime,
